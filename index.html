@@ -48,46 +48,43 @@ margin-top: 6px;
 <div class="updated" id="updateTime"></div>
 
 <script>
-const sheetBase = "https://opensheet.elk.sh/1nKbdlZUVFX-zegMiYf12tWsYN4810DOedJ6t6V-ft3L/";
-
-async function loadSheetData(sheetName, tableId) {
+async function fetchSheetData() {
+const url = 'https://opensheet.elk.sh/1nKbdlZUVFX-zegMiYf12tWsYN4810DOedJ6t6V-ft3L/NIFTY';
 try {
-const res = await fetch(sheetBase + sheetName + "?t=" + Date.now()); // prevent caching
+const res = await fetch(url);
 const data = await res.json();
-const table = document.getElementById(tableId);
-const thead = table.querySelector("thead");
-const tbody = table.querySelector("tbody");
+
+const container = document.getElementById('nifty-data');
+container.innerHTML = ''; // clear old
 
 if (!data.length) {
-thead.innerHTML = "";
-tbody.innerHTML = "<tr><td>No data found</td></tr>";
+container.innerHTML = '<tr><td colspan="10">No data found</td></tr>';
 return;
 }
 
-// Table headers
+// build table headers dynamically
 const headers = Object.keys(data[0]);
-thead.innerHTML = "<tr>" + headers.map(h => `<th>${h}</th>`).join("") + "</tr>";
+const headerRow = '<tr>' + headers.map(h => `<th>${h}</th>`).join('') + '</tr>';
+container.innerHTML += headerRow;
 
-// Table rows
-tbody.innerHTML = data.map(row =>
-"<tr>" + headers.map(h => `<td>${row[h] || ""}</td>`).join("") + "</tr>"
-).join("");
+// add each row
+data.forEach(row => {
+const rowHTML = '<tr>' + headers.map(h => `<td>${row[h] || ''}</td>`).join('') + '</tr>';
+container.innerHTML += rowHTML;
+});
+
+document.getElementById('last-update').textContent =
+'Last updated: ' + new Date().toLocaleTimeString();
 } catch (err) {
-document.getElementById(tableId).innerHTML =
-"<tr><td>Error loading data</td></tr>";
+console.error(err);
+document.getElementById('nifty-data').innerHTML =
+'<tr><td colspan="10">Error loading data</td></tr>';
 }
 }
 
-async function autoUpdate() {
-await loadSheetData("NIFTY", "niftyTable");
-await loadSheetData("BANKNIFTY", "bankniftyTable");
-document.getElementById("updateTime").textContent =
-"Last updated: " + new Date().toLocaleTimeString();
-}
-
-// Auto update every 20 seconds
-autoUpdate();
-setInterval(autoUpdate, 20000);
+// initial + periodic refresh
+fetchSheetData();
+setInterval(fetchSheetData, 20000);
 </script>
 </body>
 </html>
