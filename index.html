@@ -1,51 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Live Option Chain Dashboard</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Options Dashboard</title>
 <style>
 body {
 font-family: Arial, sans-serif;
-margin: 30px;
-background: #f8f8f8;
+background: #fafafa;
 color: #222;
 text-align: center;
+padding: 20px;
 }
 h2 {
 margin-top: 40px;
-border-bottom: 2px solid #ccc;
-padding-bottom: 5px;
 }
-table {
-width: 100%;
-border-collapse: collapse;
-margin-top: 10px;
-}
-th, td {
-padding: 8px;
+.box {
 border: 1px solid #ccc;
-}
-th {
-background-color: #eaeaea;
+padding: 10px;
+margin: 10px auto;
+width: 90%;
+max-width: 400px;
+background: #fff;
+border-radius: 8px;
 }
 .timestamp {
 margin-top: 20px;
-color: #666;
 font-size: 14px;
+color: #666;
 }
 </style>
 </head>
 <body>
-<h1>📊 Live NIFTY & BANKNIFTY Option Chain</h1>
-
 <h2>NIFTY Option Chain</h2>
-<div id="niftyData">Loading...</div>
+<div id="nifty-data" class="box">Loading...</div>
 
 <h2>BANKNIFTY Option Chain</h2>
-<div id="bankniftyData">Loading...</div>
+<div id="banknifty-data" class="box">Loading...</div>
 
-<div class="timestamp" id="lastUpdated">Last updated: --</div>
+<div class="timestamp" id="last-updated"></div>
 
 <script>
 const NIFTY_URL = "https://opensheet.elk.sh/1nKbdlZUVFX-zegMiYf21wSyN481ODOeDJ6f6V-ft3L4/NIFTY";
@@ -58,41 +51,40 @@ fetch(NIFTY_URL),
 fetch(BANKNIFTY_URL)
 ]);
 
-const [niftyData, bankData] = await Promise.all([
-niftyRes.json(),
-bankRes.json()
-]);
+const niftyData = await niftyRes.json();
+const bankData = await bankRes.json();
 
-document.getElementById("niftyData").innerHTML = buildTable(niftyData);
-document.getElementById("bankniftyData").innerHTML = buildTable(bankData);
+document.getElementById("nifty-data").innerHTML = formatData(niftyData);
+document.getElementById("banknifty-data").innerHTML = formatData(bankData);
 
-const now = new Date();
-document.getElementById("lastUpdated").innerText =
-"Last updated: " + now.toLocaleTimeString();
-} catch (error) {
-document.getElementById("niftyData").innerHTML = "Error loading NIFTY data.";
-document.getElementById("bankniftyData").innerHTML = "Error loading BANKNIFTY data.";
+const time = new Date().toLocaleTimeString();
+document.getElementById("last-updated").textContent = "Last updated: " + time;
+} catch (e) {
+document.getElementById("nifty-data").innerText = "Error fetching data.";
+document.getElementById("banknifty-data").innerText = "Error fetching data.";
 }
 }
 
-function buildTable(data) {
+function formatData(data) {
 if (!data || data.length === 0) return "No data found";
-const headers = Object.keys(data[0]);
-let html = "<table><tr>";
-headers.forEach(h => html += `<th>${h}</th>`);
+let html = "<table style='width:100%;border-collapse:collapse;'><tr>";
+for (let key in data[0]) {
+html += `<th style='border:1px solid #ccc;padding:5px;'>${key}</th>`;
+}
 html += "</tr>";
 data.forEach(row => {
 html += "<tr>";
-headers.forEach(h => html += `<td>${row[h] || ""}</td>`);
+for (let key in row) {
+html += `<td style='border:1px solid #ccc;padding:5px;'>${row[key]}</td>`;
+}
 html += "</tr>";
 });
 html += "</table>";
 return html;
 }
 
-// Fetch immediately and every 5 seconds
 fetchData();
-setInterval(fetchData, 5000);
+setInterval(fetchData, 5000); // refresh every 5 seconds
 </script>
 </body>
 </html>
