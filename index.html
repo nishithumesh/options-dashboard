@@ -1,252 +1,82 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <meta http-equiv="Content-Style-Type" content="text/css">
-  <title></title>
-  <meta name="Generator" content="Cocoa HTML Writer">
-  <meta name="CocoaVersion" content="1504.83">
-  <style type="text/css">
-    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; line-height: 11.0px; font: 10.0px Arial; color: #222222; -webkit-text-stroke: #222222; background-color: #ffffff}
-    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; line-height: 11.0px; font: 10.0px Arial; color: #222222; -webkit-text-stroke: #222222; background-color: #ffffff; min-height: 11.0px}
-    p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; line-height: 11.0px; font: 10.0px Arial; color: #1155cc; -webkit-text-stroke: #1155cc; background-color: #ffffff}
-    span.s1 {font-kerning: none}
-    span.s2 {font-kerning: none; color: #222222; -webkit-text-stroke: 0px #222222}
-    span.s3 {text-decoration: underline ; font-kerning: none; color: #1155cc; -webkit-text-stroke: 0px #1155cc}
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NIFTY & BANKNIFTY Dashboard</title>
+<style>
+body {
+font-family: 'Segoe UI', sans-serif;
+background: #0d1117;
+color: #e6edf3;
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+min-height: 100vh;
+margin: 0;
+}
+h1 {
+color: #58a6ff;
+margin-bottom: 10px;
+}
+.card {
+background: #161b22;
+padding: 20px 30px;
+border-radius: 8px;
+box-shadow: 0 0 10px rgba(88, 166, 255, 0.2);
+margin: 10px 0;
+width: 260px;
+text-align: center;
+}
+.name {
+font-size: 1.2rem;
+font-weight: bold;
+}
+.value {
+font-size: 2rem;
+margin-top: 8px;
+}
+.updated {
+margin-top: 15px;
+font-size: 0.9rem;
+color: #8b949e;
+}
+</style>
 </head>
 <body>
-<p class="p1"><span class="s1">&lt;!doctype html&gt;</span></p>
-<p class="p1"><span class="s1">&lt;html lang="en"&gt;</span></p>
-<p class="p1"><span class="s1">&lt;head&gt;</span></p>
-<p class="p1"><span class="s1">&lt;meta charset="utf-8"/&gt;</span></p>
-<p class="p1"><span class="s1">&lt;meta name="viewport" content="width=device-width,initial-scale=1"/&gt;</span></p>
-<p class="p1"><span class="s1">&lt;title&gt;NIFTY / BANKNIFTY Option Dashboard&lt;/title&gt;</span></p>
-<p class="p1"><span class="s1">&lt;style&gt;</span></p>
-<p class="p1"><span class="s1">body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial; margin:8px; color:#111}</span></p>
-<p class="p1"><span class="s1">h1{font-size:18px;margin:6px 0}</span></p>
-<p class="p1"><span class="s1">.top {display:flex;gap:10px;align-items:center;flex-wrap:wrap}</span></p>
-<p class="p1"><span class="s1">.card{border-radius:8px;padding:10px;background:#fff;border:1px solid #ddd;box-shadow:0 1px 3px rgba(0,0,0,0.03);margin:8px 0}</span></p>
-<p class="p1"><span class="s1">table{width:100%;border-collapse:collapse;font-size:12px}</span></p>
-<p class="p1"><span class="s1">th,td{padding:6px;border-bottom:1px solid #eee;text-align:center}</span></p>
-<p class="p1"><span class="s1">th{font-weight:600;background:#fafafa}</span></p>
-<p class="p1"><span class="s1">.sig-bull{background:linear-gradient(90deg,#e6ffed,#bff3c6)}</span></p>
-<p class="p1"><span class="s1">.sig-bear{background:linear-gradient(90deg,#ffecea,#ffbdbd)}</span></p>
-<p class="p1"><span class="s1">.sig-neutral{background:#f5f5f7}</span></p>
-<p class="p1"><span class="s1">.atm{outline:2px solid #0077ff}</span></p>
-<p class="p1"><span class="s1">.small{font-size:12px;color:#666}</span></p>
-<p class="p1"><span class="s1">.summary{display:flex;gap:10px;flex-wrap:wrap}</span></p>
-<p class="p1"><span class="s1">.badge{padding:6px 8px;border-radius:6px;background:#f3f4f6;font-weight:600}</span></p>
-<p class="p1"><span class="s1">.muted{color:#666}</span></p>
-<p class="p1"><span class="s1">#loading{color:#666;font-size:13px}</span></p>
-<p class="p1"><span class="s1">button{padding:8px 10px;border-radius:6px;border:none;background:#0b72ff;color:#fff;font-weight:600}</span></p>
-<p class="p1"><span class="s1">@media(min-width:900px){th,td{font-size:13px}}</span></p>
-<p class="p1"><span class="s1">&lt;/style&gt;</span></p>
-<p class="p1"><span class="s1">&lt;/head&gt;</span></p>
-<p class="p1"><span class="s1">&lt;body&gt;</span></p>
-<p class="p1"><span class="s1">&lt;h1&gt;Option Dashboard — NIFTY &amp; BANKNIFTY (2 min refresh)&lt;/h1&gt;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1">&lt;div class="top"&gt;</span></p>
-<p class="p1"><span class="s1">&lt;div class="card"&gt;</span></p>
-<p class="p1"><span class="s1">&lt;div class="small"&gt;Last update:&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1">&lt;div id="lastUpdate" class="small muted"&gt;—&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1">&lt;/div&gt;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1">&lt;div class="card"&gt;</span></p>
-<p class="p1"><span class="s1">&lt;div class="small"&gt;Source:&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1">&lt;div class="small muted"&gt;NSE JSON (via CORS proxy)&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1">&lt;/div&gt;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1">&lt;div style="margin-left:auto"&gt;</span></p>
-<p class="p1"><span class="s1">&lt;button id="refreshBtn"&gt;Refresh now&lt;/button&gt;</span></p>
-<p class="p1"><span class="s1">&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1">&lt;/div&gt;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1">&lt;div id="loading" class="small"&gt;Loading…&lt;/div&gt;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1">&lt;div id="niftyCard" class="card"&gt;</span></p>
-<p class="p1"><span class="s1">&lt;h2 style="margin:0"&gt;NIFTY &lt;span id="niftyUnderlying" class="small muted"&gt;&lt;/span&gt;&lt;/h2&gt;</span></p>
-<p class="p1"><span class="s1">&lt;div class="summary"&gt;</span></p>
-<p class="p1"><span class="s1">&lt;div class="badge" id="niftySummary"&gt;—&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1">&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1">&lt;div style="overflow:auto;max-height:55vh"&gt;</span></p>
-<p class="p1"><span class="s1">&lt;table id="niftyTable"&gt;&lt;thead&gt;</span></p>
-<p class="p1"><span class="s1">&lt;tr&gt;</span></p>
-<p class="p1"><span class="s1">&lt;th&gt;Strike&lt;/th&gt;</span></p>
-<p class="p1"><span class="s1">&lt;th&gt;CE OI&lt;/th&gt;</span></p>
-<p class="p1"><span class="s1">&lt;th&gt;CE ΔOI&lt;/th&gt;</span></p>
-<p class="p1"><span class="s1">&lt;th&gt;CE Vol&lt;/th&gt;</span></p>
-<p class="p1"><span class="s1">&lt;th&gt;CE LTP&lt;/th&gt;</span></p>
-<p class="p1"><span class="s1">&lt;th&gt;PE LTP&lt;/th&gt;</span></p>
-<p class="p1"><span class="s1">&lt;th&gt;PE Vol&lt;/th&gt;</span></p>
-<p class="p1"><span class="s1">&lt;th&gt;PE ΔOI&lt;/th&gt;</span></p>
-<p class="p1"><span class="s1">&lt;th&gt;PE OI&lt;/th&gt;</span></p>
-<p class="p1"><span class="s1">&lt;th&gt;Signal&lt;/th&gt;</span></p>
-<p class="p1"><span class="s1">&lt;/tr&gt;</span></p>
-<p class="p1"><span class="s1">&lt;/thead&gt;&lt;tbody&gt;&lt;/tbody&gt;&lt;/table&gt;</span></p>
-<p class="p1"><span class="s1">&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1">&lt;/div&gt;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1">&lt;div id="bankCard" class="card"&gt;</span></p>
-<p class="p1"><span class="s1">&lt;h2 style="margin:0"&gt;BANKNIFTY &lt;span id="bankUnderlying" class="small muted"&gt;&lt;/span&gt;&lt;/h2&gt;</span></p>
-<p class="p1"><span class="s1">&lt;div class="summary"&gt;</span></p>
-<p class="p1"><span class="s1">&lt;div class="badge" id="bankSummary"&gt;—&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1">&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1">&lt;div style="overflow:auto;max-height:55vh"&gt;</span></p>
-<p class="p1"><span class="s1">&lt;table id="bankTable"&gt;&lt;thead&gt;</span></p>
-<p class="p1"><span class="s1">&lt;tr&gt;</span></p>
-<p class="p1"><span class="s1">&lt;th&gt;Strike&lt;/th&gt;</span></p>
-<p class="p1"><span class="s1">&lt;th&gt;CE OI&lt;/th&gt;</span></p>
-<p class="p1"><span class="s1">&lt;th&gt;CE ΔOI&lt;/th&gt;</span></p>
-<p class="p1"><span class="s1">&lt;th&gt;CE Vol&lt;/th&gt;</span></p>
-<p class="p1"><span class="s1">&lt;th&gt;CE LTP&lt;/th&gt;</span></p>
-<p class="p1"><span class="s1">&lt;th&gt;PE LTP&lt;/th&gt;</span></p>
-<p class="p1"><span class="s1">&lt;th&gt;PE Vol&lt;/th&gt;</span></p>
-<p class="p1"><span class="s1">&lt;th&gt;PE ΔOI&lt;/th&gt;</span></p>
-<p class="p1"><span class="s1">&lt;th&gt;PE OI&lt;/th&gt;</span></p>
-<p class="p1"><span class="s1">&lt;th&gt;Signal&lt;/th&gt;</span></p>
-<p class="p1"><span class="s1">&lt;/tr&gt;</span></p>
-<p class="p1"><span class="s1">&lt;/thead&gt;&lt;tbody&gt;&lt;/tbody&gt;&lt;/table&gt;</span></p>
-<p class="p1"><span class="s1">&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1">&lt;/div&gt;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1">&lt;script&gt;</span></p>
-<p class="p1"><span class="s1">const REFRESH_MS = 2*60*1000; // 2 minutes</span></p>
-<p class="p1"><span class="s1">const proxies = [</span></p>
-<p class="p3"><span class="s2">url =&gt; `<a href="https://api.allorigins.win/raw?url=$%7BencodeURIComponent(url)%7D"><span class="s3">https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`</span></a>,</span></p>
-<p class="p3"><span class="s2">url =&gt; `<a href="https://corsproxy.io/?$%7BencodeURIComponent(url)%7D"><span class="s3">https://corsproxy.io/?${encodeURIComponent(url)}`</span></a>,</span></p>
-<p class="p3"><span class="s2">url =&gt; `<a href="https://api.codetabs.space/v1/proxy?quest=$%7BencodeURIComponent(url)%7D"><span class="s3">https://api.codetabs.space/v1/proxy?quest=${encodeURIComponent(url)}`</span></a></span></p>
-<p class="p1"><span class="s1">];</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1">// NSE endpoints</span></p>
-<p class="p1"><span class="s1">const urls = {</span></p>
-<p class="p3"><span class="s2">NIFTY: "<a href="https://www.nseindia.com/api/option-chain-indices?symbol=NIFTY"><span class="s3">https://www.nseindia.com/api/option-chain-indices?symbol=NIFTY</span></a>",</span></p>
-<p class="p3"><span class="s2">BANKNIFTY: "<a href="https://www.nseindia.com/api/option-chain-indices?symbol=BANKNIFTY"><span class="s3">https://www.nseindia.com/api/option-chain-indices?symbol=BANKNIFTY</span></a>"</span></p>
-<p class="p1"><span class="s1">};</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1">let timer = null;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1">async function fetchWithProxies(origUrl){</span></p>
-<p class="p1"><span class="s1">for(let i=0;i&lt;proxies.length;i++){</span></p>
-<p class="p1"><span class="s1">const pUrl = proxies[i](origUrl);</span></p>
-<p class="p1"><span class="s1">try{</span></p>
-<p class="p1"><span class="s1">const resp = await fetch(pUrl, {method:'GET'} );</span></p>
-<p class="p1"><span class="s1">if(!resp.ok) throw new Error(resp.status+' '+resp.statusText);</span></p>
-<p class="p1"><span class="s1">const text = await resp.text();</span></p>
-<p class="p1"><span class="s1">const json = JSON.parse(text);</span></p>
-<p class="p1"><span class="s1">return json;</span></p>
-<p class="p1"><span class="s1">}catch(e){</span></p>
-<p class="p1"><span class="s1">// try next</span></p>
-<p class="p1"><span class="s1">}</span></p>
-<p class="p1"><span class="s1">}</span></p>
-<p class="p1"><span class="s1">throw new Error('All proxies failed (CORS or blocked). Use server proxy.');</span></p>
-<p class="p1"><span class="s1">}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1">function computeSignal(ce, pe){</span></p>
-<p class="p1"><span class="s1">// Use numeric values; if missing, neutral</span></p>
-<p class="p1"><span class="s1">const cePrice = Number(ce?.lastPrice || 0);</span></p>
-<p class="p1"><span class="s1">const pePrice = Number(pe?.lastPrice || 0);</span></p>
-<p class="p1"><span class="s1">const ceOI = Number(ce?.openInterest || 0);</span></p>
-<p class="p1"><span class="s1">const peOI = Number(pe?.openInterest || 0);</span></p>
-<p class="p1"><span class="s1">const ceD = Number(ce?.changeinOpenInterest || 0);</span></p>
-<p class="p1"><span class="s1">const peD = Number(pe?.changeinOpenInterest || 0);</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1">if(cePrice&gt;0 &amp;&amp; ceD&gt;0 &amp;&amp; cePrice&gt; (Number(ce?.previousPrice || 0)) ) return 'Bullish';</span></p>
-<p class="p1"><span class="s1">if(pePrice&gt;0 &amp;&amp; peD&gt;0 &amp;&amp; pePrice&gt; (Number(pe?.previousPrice || 0)) ) return 'Bearish';</span></p>
-<p class="p1"><span class="s1">// fallback: compare deltas</span></p>
-<p class="p1"><span class="s1">if(ceD &gt; Math.abs(peD)) return 'Bullish';</span></p>
-<p class="p1"><span class="s1">if(peD &gt; Math.abs(ceD)) return 'Bearish';</span></p>
-<p class="p1"><span class="s1">return 'Neutral';</span></p>
-<p class="p1"><span class="s1">}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1">function renderTable(sheetId, json){</span></p>
-<p class="p1"><span class="s1">const tbody = document.querySelector(`#${sheetId} tbody`);</span></p>
-<p class="p1"><span class="s1">tbody.innerHTML = '';</span></p>
-<p class="p1"><span class="s1">if(!json || !json.records || !json.records.data) return;</span></p>
-<p class="p1"><span class="s1">const data = json.records.data;</span></p>
-<p class="p1"><span class="s1">const underlying = json.records.underlyingValue || 0;</span></p>
-<p class="p1"><span class="s1">document.getElementById(sheetId==='niftyTable' ? 'niftyUnderlying' : 'bankUnderlying')</span></p>
-<p class="p1"><span class="s1">.textContent = "Underlying: " + underlying;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1">// summary metrics: total CE OI vs PE OI</span></p>
-<p class="p1"><span class="s1">let totalCEOI = 0, totalPEOI = 0, totalCEVol=0, totalPEVol=0;</span></p>
-<p class="p1"><span class="s1">data.forEach(item=&gt;{</span></p>
-<p class="p1"><span class="s1">const ce = item.CE || {};</span></p>
-<p class="p1"><span class="s1">const pe = item.PE || {};</span></p>
-<p class="p1"><span class="s1">totalCEOI += Number(ce.openInterest || 0);</span></p>
-<p class="p1"><span class="s1">totalPEOI += Number(pe.openInterest || 0);</span></p>
-<p class="p1"><span class="s1">totalCEVol += Number(ce.totalTradedVolume || 0);</span></p>
-<p class="p1"><span class="s1">totalPEVol += Number(pe.totalTradedVolume || 0);</span></p>
-<p class="p1"><span class="s1">});</span></p>
-<p class="p1"><span class="s1">const summaryEl = sheetId==='niftyTable' ? document.getElementById('niftySummary') : document.getElementById('bankSummary');</span></p>
-<p class="p1"><span class="s1">summaryEl.textContent = `CE OI: ${abbrev(totalCEOI)} / PE OI: ${abbrev(totalPEOI)} | CE Vol: ${abbrev(totalCEVol)} / PE Vol: ${abbrev(totalPEVol)}`;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1">// sort by strike ascending</span></p>
-<p class="p1"><span class="s1">data.sort((a,b)=&gt; a.strikePrice - b.strikePrice);</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1">data.forEach(item=&gt;{</span></p>
-<p class="p1"><span class="s1">const strike = item.strikePrice;</span></p>
-<p class="p1"><span class="s1">const ce = item.CE || {};</span></p>
-<p class="p1"><span class="s1">const pe = item.PE || {};</span></p>
-<p class="p1"><span class="s1">const signal = computeSignal(ce, pe);</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1">const tr = document.createElement('tr');</span></p>
-<p class="p1"><span class="s1">if(Math.abs(strike - underlying) &lt;= ( (json.records.strikeInterval||100) ) ){ tr.classList.add('atm'); }</span></p>
-<p class="p1"><span class="s1">const td = (v)=&gt;{ const x=document.createElement('td'); x.textContent = v!==undefined &amp;&amp; v!==null ? v : ''; return x; };</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1">tr.appendChild(td(strike));</span></p>
-<p class="p1"><span class="s1">tr.appendChild(td(numFormat(ce.openInterest)));</span></p>
-<p class="p1"><span class="s1">tr.appendChild(td(numFormat(ce.changeinOpenInterest)));</span></p>
-<p class="p1"><span class="s1">tr.appendChild(td(numFormat(ce.totalTradedVolume)));</span></p>
-<p class="p1"><span class="s1">tr.appendChild(td(numFormat(ce.lastPrice)));</span></p>
-<p class="p1"><span class="s1">tr.appendChild(td(numFormat(pe.lastPrice)));</span></p>
-<p class="p1"><span class="s1">tr.appendChild(td(numFormat(pe.totalTradedVolume)));</span></p>
-<p class="p1"><span class="s1">tr.appendChild(td(numFormat(pe.changeinOpenInterest)));</span></p>
-<p class="p1"><span class="s1">tr.appendChild(td(numFormat(pe.openInterest)));</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1">const sigtd = document.createElement('td');</span></p>
-<p class="p1"><span class="s1">sigtd.textContent = signal;</span></p>
-<p class="p1"><span class="s1">if(signal==='Bullish') sigtd.className='sig-bull';</span></p>
-<p class="p1"><span class="s1">else if(signal==='Bearish') sigtd.className='sig-bear';</span></p>
-<p class="p1"><span class="s1">else sigtd.className='sig-neutral';</span></p>
-<p class="p1"><span class="s1">tr.appendChild(sigtd);</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1">tbody.appendChild(tr);</span></p>
-<p class="p1"><span class="s1">});</span></p>
-<p class="p1"><span class="s1">}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1">function numFormat(v){</span></p>
-<p class="p1"><span class="s1">if(v===undefined || v===null || v==='') return '';</span></p>
-<p class="p1"><span class="s1">const n = Number(v);</span></p>
-<p class="p1"><span class="s1">if(isNaN(n)) return v;</span></p>
-<p class="p1"><span class="s1">if(n&gt;1000000) return (n/1000000).toFixed(2)+'M';</span></p>
-<p class="p1"><span class="s1">if(n&gt;1000) return (n/1000).toFixed(1)+'K';</span></p>
-<p class="p1"><span class="s1">return n;</span></p>
-<p class="p1"><span class="s1">}</span></p>
-<p class="p1"><span class="s1">function abbrev(n){ return numFormat(n); }</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1">async function refreshAll(){</span></p>
-<p class="p1"><span class="s1">document.getElementById('loading').textContent = 'Refreshing…';</span></p>
-<p class="p1"><span class="s1">try{</span></p>
-<p class="p1"><span class="s1">const [niftyJson, bankJson] = await Promise.all([ fetchWithProxies(urls.NIFTY), fetchWithProxies(urls.BANKNIFTY) ]);</span></p>
-<p class="p1"><span class="s1">renderTable('niftyTable', niftyJson);</span></p>
-<p class="p1"><span class="s1">renderTable('bankTable', bankJson);</span></p>
-<p class="p1"><span class="s1">const now = new Date();</span></p>
-<p class="p1"><span class="s1">document.getElementById('lastUpdate').textContent = now.toLocaleString();</span></p>
-<p class="p1"><span class="s1">document.getElementById('loading').textContent = '';</span></p>
-<p class="p1"><span class="s1">}catch(err){</span></p>
-<p class="p1"><span class="s1">document.getElementById('loading').textContent = 'Error: '+err.message;</span></p>
-<p class="p1"><span class="s1">}</span></p>
-<p class="p1"><span class="s1">}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1">document.getElementById('refreshBtn').addEventListener('click', ()=&gt;{ refreshAll(); });</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1">(async function init(){</span></p>
-<p class="p1"><span class="s1">await refreshAll();</span></p>
-<p class="p1"><span class="s1">timer = setInterval(refreshAll, REFRESH_MS);</span></p>
-<p class="p1"><span class="s1">})();</span></p>
-<p class="p1"><span class="s1">&lt;/script&gt;</span></p>
-<p class="p1"><span class="s1">&lt;/body&gt;</span></p>
-<p class="p1"><span class="s1">&lt;/html&gt;</span></p>
+<h1>NIFTY & BANKNIFTY Dashboard</h1>
+<div class="card">
+<div class="name">NIFTY 50</div>
+<div id="nifty" class="value">Loading...</div>
+</div>
+<div class="card">
+<div class="name">BANKNIFTY</div>
+<div id="banknifty" class="value">Loading...</div>
+</div>
+<div class="updated" id="updated">Refreshing every 2 min...</div>
+
+<script>
+async function fetchData() {
+try {
+const res = await fetch('https://api.allorigins.win/get?url=' + encodeURIComponent('https://www.nseindia.com/api/allIndices'));
+const data = await res.json();
+const json = JSON.parse(data.contents);
+
+const nifty = json.data.find(i => i.index === "NIFTY 50");
+const banknifty = json.data.find(i => i.index === "NIFTY BANK");
+
+document.getElementById('nifty').textContent = nifty.last;
+document.getElementById('banknifty').textContent = banknifty.last;
+document.getElementById('updated').textContent = "Last updated: " + new Date().toLocaleTimeString();
+} catch (err) {
+document.getElementById('updated').textContent = "Error fetching data";
+console.error(err);
+}
+}
+
+fetchData();
+setInterval(fetchData, 120000); // refresh every 2 minutes
+</script>
 </body>
 </html>
